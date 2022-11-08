@@ -15,6 +15,8 @@ public class Main {
     Scrapper scrapper = new Scrapper();
 
     //scrapper.getPosts();
+
+    //
     scrapper.launchToCSV();
 
   }
