@@ -5,16 +5,17 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
-import javax.lang.model.util.Elements;
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 public class Main {
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws IOException {
     Scrapper scrapper = new Scrapper();
 
-    scrapper.getPosts();
+    //scrapper.getPosts();
+    scrapper.launchToCSV();
 
   }
 }
