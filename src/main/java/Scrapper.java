@@ -41,12 +41,16 @@ public class Scrapper {
         FileWriter launchCSV_FileWriter = new FileWriter("out/launch.csv");
         BufferedWriter launchCSV_BufferedWriter = new BufferedWriter(launchCSV_FileWriter);
         launchCSV_BufferedWriter.write("\"launch_name\",\"launch_status\",\"launch_date\",\"rocket_name\",\"agency_name\",\"location_name\"\n");
+        FileWriter agencyCSV_FileWriter = new FileWriter("out/agency.csv");
+        BufferedWriter agencyCSV_BufferedWriter = new BufferedWriter(agencyCSV_FileWriter);
+        agencyCSV_FileWriter.write("\"agency_name\",\"agency_type\",\"agency_abbreviation\",\"agency_administration\",\"agency_founded\",\"agency_launchers\",\"agency_country\",,\"agency_description\"\n");
         for(String url : allURLs){
             driver.get(url);
             getLaunchCSV(launchCSV_BufferedWriter);
-            getAgencyCSV(launchCSV_BufferedWriter);
+            getAgencyCSV(agencyCSV_BufferedWriter);
         }
         launchCSV_BufferedWriter.close();
+        agencyCSV_BufferedWriter.close();
 
     }
 
@@ -80,14 +84,13 @@ public class Scrapper {
     }
     public void getAgencyCSV(BufferedWriter bf) throws IOException {
         String agency_name = "unknown", agency_type = "unknown", agency_abbreviation = "unknown", agency_administration = "unknown", agency_founded = "unknown", agency_launchers = "unknown", agency_country = "unknown", agency_description = "unknown";
-        WebElement launch_details = driver.findElement(By.id("launch-details"));
+        WebElement launch_details = driver.findElement(By.id("agency"));
         try {
-            launch_title = launch_details.findElement(By.className("entry-title")).getText();
-            launch_title.replace(",","");
-        } catch (Exception e){}
+            agency_name = launch_details.findElement(By.className("h5")).getText();
+        } catch (Exception e) {
+        }
 
-        bf.write("\"" + agency_name + "\",\"" + agency_type + "\",\"" + agency_abbreviation + "\",\"" + agency_administration + "\",\"" + agency_name + "\",\"" + agency_founded + "\"\n");
-
-
+        bf.write("\"" + agency_name + "\",\"" + agency_type + "\",\"" + agency_abbreviation + "\",\"" + agency_administration + "\",\"" + agency_founded + "\",\"" + agency_launchers + "\",\"" + agency_country + "\",\"" + agency_description + "\"\n");
+    }
 
 }
