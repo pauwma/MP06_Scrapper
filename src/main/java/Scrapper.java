@@ -38,55 +38,56 @@ public class Scrapper {
 
     // ? Obtiene todos los CSV de 1 post.
     public void getInfoPost(List<String> allURLs) throws IOException {
-        getLaunchesCSV(allURLs);
-    }
-
-    // ? Escribe toda la información sobre Launch de todos los URLS.
-    public void getLaunchesCSV(List<String> URLS) throws IOException {
-        FileWriter fw = new FileWriter("out/launch.csv");
-        BufferedWriter bf = new BufferedWriter(fw);
-        bf.write("\"launch_name\",\"launch_status\",\"launch_date\",\"rocket_name\",\"agency_name\",\"location_name\"\n");
-        for (String url : URLS){
+        FileWriter launchCSV_FileWriter = new FileWriter("out/launch.csv");
+        BufferedWriter launchCSV_BufferedWriter = new BufferedWriter(launchCSV_FileWriter);
+        launchCSV_BufferedWriter.write("\"launch_name\",\"launch_status\",\"launch_date\",\"rocket_name\",\"agency_name\",\"location_name\"\n");
+        for(String url : allURLs){
             driver.get(url);
-            getLaunchCSV(bf);
+            getLaunchCSV(launchCSV_BufferedWriter);
+            getAgencyCSV(launchCSV_BufferedWriter);
         }
-        bf.close();//
+        launchCSV_BufferedWriter.close();
+
     }
 
     // ? Escribe toda la información sobre Launch de 1 URLS.
     public void getLaunchCSV(BufferedWriter bf) throws IOException {
-        String launch_title = "", launch_status = "", launch_date = "", rocket_name = "", agency_name = "", location_name = "";
+        String launch_title = "", launch_status = "", launch_date = "", rocket_name = "", agency_name = "", location_name = "unknown";
         WebElement launch_details = driver.findElement(By.id("launch-details"));
         try {
             launch_title = launch_details.findElement(By.className("entry-title")).getText();
             launch_title.replace(",","");
-            System.out.println("INFO - launch_title");
         } catch (Exception e){}
         try {
             launch_status = launch_details.findElement(new By.ByXPath("//*[@id=\"launch-details\"]/div[2]/div/div[2]")).getText();
             launch_status = launch_status.replace("STATUS","").replace("LAUNCH","").replace("\n","").trim();
-            System.out.println("INFO - launch_status");
         } catch (Exception e){}
         try {
             launch_date = launch_details.findElement(By.className("launchDateTime")).getText();
             launch_date = launch_date.replace("\n"," - ").replace("•","").trim();
-            System.out.println("INFO - launch_date");
         } catch (Exception e){}
         try {
             rocket_name = launch_details.findElement(By.className("mt-2")).getText();
-            System.out.println("INFO - rocket_name");
         } catch (Exception e){}
         try {
             agency_name = launch_details.findElement(By.className("pb-3")).getText();
-            System.out.println("INFO - agency_name");
         } catch (Exception e){}
         try {
             WebElement location = driver.findElement(By.id("location"));
             location_name = location.findElement(By.className("stretched-link")).getText();
-            System.out.println("INFO - location_name");
         } catch (Exception e){}
         bf.write("\"" + launch_title + "\",\"" + launch_status + "\",\"" + launch_date + "\",\"" + rocket_name + "\",\"" + agency_name + "\",\"" + location_name + "\"\n");
     }
+    public void getAgencyCSV(BufferedWriter bf) throws IOException {
+        String agency_name = "unknown", agency_type = "unknown", agency_abbreviation = "unknown", agency_administration = "unknown", agency_founded = "unknown", agency_launchers = "unknown", agency_country = "unknown", agency_description = "unknown";
+        WebElement launch_details = driver.findElement(By.id("launch-details"));
+        try {
+            launch_title = launch_details.findElement(By.className("entry-title")).getText();
+            launch_title.replace(",","");
+        } catch (Exception e){}
+
+        bf.write("\"" + agency_name + "\",\"" + agency_type + "\",\"" + agency_abbreviation + "\",\"" + agency_administration + "\",\"" + agency_name + "\",\"" + agency_founded + "\"\n");
+
 
 
 }
