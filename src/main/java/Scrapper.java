@@ -50,7 +50,7 @@ public class Scrapper {
             driver.get(url);
             getLaunchCSV(bf);
         }
-        bf.close();
+        bf.close();//
     }
 
     // ? Escribe toda la información sobre Launch de 1 URLS.
