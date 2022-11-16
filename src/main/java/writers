@@ -1,0 +1,18 @@
+FileWriter launchCSV_FileWriter = new FileWriter("out/launch.csv");
+BufferedWriter launchCSV_BufferedWriter = new BufferedWriter(launchCSV_FileWriter);
+launchCSV_BufferedWriter.write("\"launch_name\",\"launch_status\",\"launch_date\",\"rocket_name\",\"agency_name\",\"location_name\"\n");
+//bf.write("\"" + launch_title + "\",\"" + launch_status + "\",\"" + launch_date + "\",\"" + rocket_name + "\",\"" + agency_name + "\",\"" + location_name + "\"\n");
+
+
+FileWriter agencyCSV_FileWriter = new FileWriter("out/agency.csv");
+BufferedWriter agencyCSV_BufferedWriter = new BufferedWriter(agencyCSV_FileWriter);
+agencyCSV_FileWriter.write("\"agency_name\",\"agency_type\",\"agency_abbreviation\",\"agency_administration\",\"agency_founded\",\"agency_launchers\",\"agency_country\",,\"agency_description\"\n");
+bf.write("\"" + agency_name + "\",\"" + agency_type + "\",\"" + agency_abbreviation + "\",\"" + agency_administration + "\",\"" + agency_founded + "\",\"" + agency_launchers + "\",\"" + agency_country + "\",\"" + agency_description + "\"\n");
+
+
+FileWriter locationCSV_FileWriter = new FileWriter("out/location.csv");
+BufferedWriter locationCSV_BufferedWriter = new BufferedWriter(locationCSV_FileWriter);
+locationCSV_BufferedWriter.write("\"launch_name\",\"location_name\",\"location_location\",\"rockets_launched\"\n");
+bf.write("\"" + launch_name + "\",\"" + location_name + "\",\"" + location_location + "\",\"" + rockets_launched + "\"\n");
+bf.write("\"" + launch_name + "\",\"" + location_name + "\",\"" + location_location + "\",\"" + rockets_launched + "\"\n");
+
