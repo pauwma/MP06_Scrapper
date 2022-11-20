@@ -58,6 +58,7 @@ public class Scrapper {
         for(String url : allURLs){
             driver.get(url);
             getLaunchCSV(launches_list);
+
             getAgencyCSV(agencys_list);
             getLocationCSV(locations_list);
         }
