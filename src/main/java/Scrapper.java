@@ -141,5 +141,5 @@ public class Scrapper {
         } catch (Exception e) {}
 
         locations_list.add(new Location(launch_name,location_name,location_location,rockets_launched));
-    } // ! Arreglar rockets_launched
+    }
 }

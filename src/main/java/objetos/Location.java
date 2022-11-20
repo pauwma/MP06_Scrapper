@@ -38,4 +38,4 @@ public class Location {
             dataBuilder.append(fieldValue).append(",");
         }
     }
-}
+} //
