@@ -6,6 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import writers.WriterCSV;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -58,8 +59,10 @@ public class Scrapper {
         for(String url : allURLs){
             driver.get(url);
             getLaunchCSV(launches_list);
-            getAgencyCSV(agencys_list);
+            WriterCSV.launchToCSV(launches_list);
+            //getAgencyCSV(agencys_list);
             getLocationCSV(locations_list);
+            WriterCSV.locationToCSV(locations_list);
         }
     }
 
@@ -121,8 +124,7 @@ public class Scrapper {
         agencys_list.add(new Agency(agency_name, agency_type, agency_abbreviation, agency_administration, agency_founded, agency_launchers, agency_country, agency_description));
     }
     public void getLocationCSV(List<Location> locations_list) throws IOException {
-        String launch_name = "unknown", location_name = "unknown", location_location = "unknown";
-        int rockets_launched = 0;
+        String launch_name = "unknown", location_name = "unknown", location_location = "unknown", rockets_launched = "unknown";
         WebElement location = driver.findElement(By.id("location"));
         try {
             launch_name = driver.findElement(By.xpath("//*[@id=\"launch-details\"]/h1")).getText();
@@ -131,11 +133,11 @@ public class Scrapper {
             location_name = location.findElement(By.tagName("h3")).getText();
         } catch (Exception e) {}
         try {
-            location_location = location.findElement(By.className("h6")).getText().trim();
+            location_location = location.findElement(By.className("h6")).getText().replace(","," -").trim();
+            System.out.println(location_location);
         } catch (Exception e) {}
         try {
-            List<String> tmpList = List.of(location.findElement(By.className("h6")).getText().split(" "));
-            rockets_launched = Integer.parseInt(tmpList.get(0));
+            rockets_launched = location.findElement(By.className("h6")).getText();
         } catch (Exception e) {}
 
         locations_list.add(new Location(launch_name,location_name,location_location,rockets_launched));

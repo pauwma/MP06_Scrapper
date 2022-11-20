@@ -18,8 +18,23 @@ public class Launch {
     }
 
     @Override
-    public String toString() {
-        String tmpString=launch_title + " " + launch_status + " " + launch_date + " " + rocket_name + " " + agency_name + " " + location_name;
-        return tmpString;
+    public String toString(){
+        StringBuilder dataBuilder = new StringBuilder();
+        appendFieldValue(dataBuilder, launch_title);
+        appendFieldValue(dataBuilder, launch_status);
+        appendFieldValue(dataBuilder, launch_date);
+        appendFieldValue(dataBuilder, rocket_name);
+        appendFieldValue(dataBuilder, agency_name);
+        appendFieldValue(dataBuilder, location_name);
+
+
+        return dataBuilder.toString();
+    }
+    private void appendFieldValue(StringBuilder dataBuilder, String fieldValue) {
+        if(fieldValue != null) {
+            dataBuilder.append(fieldValue).append(",");
+        } else {
+            dataBuilder.append("").append(",");
+        }
     }
 }
