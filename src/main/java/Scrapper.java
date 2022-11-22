@@ -1,6 +1,6 @@
-import objetos.Agency;
-import objetos.Launch;
-import objetos.Location;
+import com.opencsv.exceptions.CsvDataTypeMismatchException;
+import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
+import objetos.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -27,9 +27,9 @@ public class Scrapper {
     }
 
     /**
-    * Obtiene todos los posts de la primera página.
-    */
-     public void getPosts() throws IOException {
+     * Obtiene todos los posts de la primera página.
+     */
+    public void getPosts() throws IOException, CsvRequiredFieldEmptyException, CsvDataTypeMismatchException {
         driver.get("https://www.spacelaunchschedule.com");
         List<WebElement> posts = driver.findElements(By.className("my-2"));
         // ? Recorre todos los posts cogiendo todos los URLS
@@ -51,23 +51,27 @@ public class Scrapper {
     /**
      * Obtiene todos los CSV de 1 post.
      */
-    public void getInfoPost(List<String> allURLs) throws IOException {
+    public void getInfoPost(List<String> allURLs) throws IOException, CsvRequiredFieldEmptyException, CsvDataTypeMismatchException {
+        // ? Creación de las listas de objetos.
         List<Launch> launches_list = new ArrayList<>();
+        List<Mission> missions_list = new ArrayList<>();
+        List<Rocket> rockets_list = new ArrayList<>();
         List<Agency> agencys_list = new ArrayList<>();
         List<Location> locations_list = new ArrayList<>();
 
+        // ? Obtención de la información y formatar a CSV y XML.
         for(String url : allURLs){
             driver.get(url);
-            getLaunchCSV(launches_list);
+            getLaunch(launches_list);
             WriterCSV.launchToCSV(launches_list);
-            //getAgencyCSV(agencys_list);
-            getLocationCSV(locations_list);
+            //getAgency(agencys_list);
+            //WriterCSV.agencyToCSV(agencys_list);
+            getLocation(locations_list);
             WriterCSV.locationToCSV(locations_list);
         }
     }
 
-    // ? Escribe toda la información sobre Launch de 1 URLS.
-    public void getLaunchCSV(List<Launch> launches_list) throws IOException {
+    public void getLaunch(List<Launch> launches_list) throws IOException {
         String launch_title = "", launch_status = "", launch_date = "", rocket_name = "", agency_name = "", location_name = "unknown";
         WebElement launch_details = driver.findElement(By.id("launch-details"));
         try {
@@ -95,9 +99,8 @@ public class Scrapper {
 
         launches_list.add(new Launch(launch_title, launch_status, launch_date, rocket_name, agency_name, location_name));
     }
-    public void getAgencyCSV(List<Agency> agencys_list) throws IOException {
-        String agency_name = "unknown", agency_type = "unknown", agency_abbreviation = "unknown", agency_administration = "unknown", agency_launchers = "unknown", agency_country = "unknown", agency_description = "none";
-        int agency_founded = 0;
+    public void getAgency(List<Agency> agencys_list) throws IOException {
+        String agency_name = "unknown", agency_type = "unknown", agency_abbreviation = "unknown", agency_administration = "unknown", agency_launchers = "unknown", agency_country = "unknown", agency_description = "none", agency_founded = "unknown", agency_spacecraft = "unknown";
         WebElement agency = driver.findElement(By.id("agency"));
         try {
             agency_name = agency.findElement(By.className("h5")).getText();
@@ -111,7 +114,7 @@ public class Scrapper {
                     case "Type" -> agency_type = agency_list_detail.get(1).trim();
                     case "Abbreviation" -> agency_abbreviation = agency_list_detail.get(1).trim();
                     case "Administration" -> agency_administration = agency_list_detail.get(1)+": "+agency_list_detail.get(2);
-                    case "Founded" -> agency_founded = Integer.parseInt(agency_list_detail.get(1).trim());
+                    case "Founded" -> agency_founded = agency_list_detail.get(1).trim();
                     case "Launchers" -> agency_launchers = agency_list_detail.get(1).trim();
                     case "Country" -> agency_country = agency_list_detail.get(1).trim();
                 }
@@ -121,9 +124,9 @@ public class Scrapper {
             agency_description = agency.findElement(By.xpath("//*[@id=\"agency\"]/p[3]")).getText();
         } catch (Exception e) {}
 
-        agencys_list.add(new Agency(agency_name, agency_type, agency_abbreviation, agency_administration, agency_founded, agency_launchers, agency_country, agency_description));
+        agencys_list.add(new Agency(agency_name, agency_type, agency_abbreviation, agency_administration, agency_founded, agency_launchers, agency_spacecraft, agency_country, agency_description));
     }
-    public void getLocationCSV(List<Location> locations_list) throws IOException {
+    public void getLocation(List<Location> locations_list) throws IOException {
         String launch_name = "unknown", location_name = "unknown", location_location = "unknown", rockets_launched = "unknown";
         WebElement location = driver.findElement(By.id("location"));
         try {
@@ -134,7 +137,6 @@ public class Scrapper {
         } catch (Exception e) {}
         try {
             location_location = location.findElement(By.className("h6")).getText().replace(","," -").trim();
-            System.out.println(location_location);
         } catch (Exception e) {}
         try {
             rockets_launched = location.findElement(By.className("h6")).getText();
