@@ -12,30 +12,4 @@ public class Location {
         this.location_location = location_location;
         this.rockets_launched = rockets_launched;
     }
-
-    /*@Override
-    public String toString() {
-        return "Location{" +
-                "launch_name='" + launch_name + '\'' +
-                ", location_name='" + location_name + '\'' +
-                ", location_location='" + location_location + '\'' +
-                ", rockets_launched=" + rockets_launched +
-                '}';
-    } */
-
-    @Override
-    public String toString() {
-        StringBuilder dataBuilder = new StringBuilder();
-        appendFieldValue(dataBuilder, launch_name);
-        appendFieldValue(dataBuilder, location_name);
-        appendFieldValue(dataBuilder, location_location);
-        appendFieldValue(dataBuilder, rockets_launched);
-
-        return dataBuilder.toString();
-    }
-    private void appendFieldValue(StringBuilder dataBuilder, String fieldValue) {
-        if(fieldValue != null) {
-            dataBuilder.append(fieldValue).append(",");
-        }
-    }
-} //
+}
