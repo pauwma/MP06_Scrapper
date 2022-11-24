@@ -62,12 +62,16 @@ public class Scrapper {
         // ? Obtención de la información y formatar a CSV y XML.
         for(String url : allURLs){
             driver.get(url);
-            getLaunch(launches_list);
-            WriterCSV.launchToCSV(launches_list);
-            //getAgency(agencys_list);
-            //WriterCSV.agencyToCSV(agencys_list);
-            getLocation(locations_list);
-            WriterCSV.locationToCSV(locations_list);
+            // * getLaunch(launches_list);
+            // * WriterCSV.launchToCSV(launches_list);
+            getMission(missions_list);
+            WriterCSV.missionToCSV(missions_list);
+            // * getRocket(rockets_list);
+            // * WriterCSV.rocketToCSV(rockets_list);
+            // ! getAgency(agencys_list);
+            // ! WriterCSV.agencyToCSV(agencys_list);
+            // * getLocation(locations_list);
+            // * WriterCSV.locationToCSV(locations_list);
         }
     }
 
@@ -98,7 +102,60 @@ public class Scrapper {
         } catch (Exception e){}
 
         launches_list.add(new Launch(launch_title, launch_status, launch_date, rocket_name, agency_name, location_name));
-    }
+    } // * ✓ Acabado
+    public void getMission(List<Mission> missions_list) throws IOException {
+        String rocket_name = "unknown", mission_name = "unknown", mission_type = "unknown", mission_launch_cost = "unknown", mission_description = "unknown";
+        WebElement mission = driver.findElement(By.id("mission"));
+        try {
+            rocket_name = driver.findElement(By.xpath("//*[@id=\"launch-details\"]/h1")).getText();
+        } catch (Exception e) {}
+        try {
+            mission_name = mission.findElement(By.className("h5")).getText();
+        } catch (Exception e) {}
+        try {
+            List<String> mission_info = new ArrayList<String>(Arrays.asList(mission.findElement(By.xpath("//*[@id=\"mission\"]/div/div/p[1]")).getText().split("\n")));
+            for(String s : mission_info){
+                List<String> mission_info_detail = new ArrayList<>(Arrays.asList(s.split(":")));
+                switch (mission_info_detail.get(0).trim()) {
+                    case "Type" -> mission_type = mission_info_detail.get(1).trim();
+                    case "Launch Cost" -> mission_launch_cost = mission_info_detail.get(1).trim();
+                }
+            }
+        } catch (Exception e) {}
+        try {
+            mission_description = mission.findElement(By.xpath("//*[@id=\"mission\"]/div/div/p[2]")).getText();
+        } catch (Exception e) {}
+
+        missions_list.add(new Mission(rocket_name, mission_name, mission_type, mission_launch_cost, mission_description));
+    } // ? ~ Probando
+    public void getRocket(List<Rocket> rockets_list) throws IOException {
+        String agency_name = "unknown", rocket_name = "unknown", rocket_family = "unknown", rocket_length = "unknown", rocket_diameter = "unknown", rocket_launch_mass = "unknown", rocket_low_earth_orbit_capacity = "unknown", rocket_description = "unknown";
+        WebElement rocket = driver.findElement(By.id("rocket"));
+        try {
+            agency_name = driver.findElement(By.xpath("//*[@id=\"agency\"]/h3")).getText();
+        } catch (Exception e) {}
+        try {
+            rocket_name = rocket.findElement(By.className("h5")).getText();
+        } catch (Exception e) {}
+        try {
+            List<String> rocket_info = new ArrayList<String>(Arrays.asList(rocket.findElement(By.xpath("//*[@id=\"rocket\"]/p[1]")).getText().split("\n")));
+            for(String s : rocket_info){
+                List<String> rocket_info_detail = new ArrayList<>(Arrays.asList(s.split(":")));
+                switch (rocket_info_detail.get(0).trim()) {
+                    case "Family" -> rocket_family = rocket_info_detail.get(1).trim();
+                    case "Length" -> rocket_length = rocket_info_detail.get(1).trim();
+                    case "Diameter" -> rocket_diameter = rocket_info_detail.get(1).trim();
+                    case "Launch Mass" -> rocket_launch_mass = rocket_info_detail.get(1).trim();
+                    case "Low Earth Orbit Capacity" -> rocket_low_earth_orbit_capacity = rocket_info_detail.get(1).trim();
+                }
+            }
+        } catch (Exception e) {}
+        try {
+            rocket_description = rocket.findElement(By.xpath("//*[@id=\"rocket\"]/p[2]")).getText();
+        } catch (Exception e) {}
+
+        rockets_list.add(new Rocket(agency_name, rocket_name, rocket_family, rocket_length, rocket_diameter, rocket_launch_mass, rocket_low_earth_orbit_capacity, rocket_description));
+    } // * ✓ Acabado
     public void getAgency(List<Agency> agencys_list) throws IOException {
         String agency_name = "unknown", agency_type = "unknown", agency_abbreviation = "unknown", agency_administration = "unknown", agency_launchers = "unknown", agency_country = "unknown", agency_description = "none", agency_founded = "unknown", agency_spacecraft = "unknown";
         WebElement agency = driver.findElement(By.id("agency"));
@@ -125,7 +182,7 @@ public class Scrapper {
         } catch (Exception e) {}
 
         agencys_list.add(new Agency(agency_name, agency_type, agency_abbreviation, agency_administration, agency_founded, agency_launchers, agency_spacecraft, agency_country, agency_description));
-    }
+    } // ! x Cosas mal
     public void getLocation(List<Location> locations_list) throws IOException {
         String launch_name = "unknown", location_name = "unknown", location_location = "unknown", rockets_launched = "unknown";
         WebElement location = driver.findElement(By.id("location"));
@@ -139,9 +196,10 @@ public class Scrapper {
             location_location = location.findElement(By.className("h6")).getText().replace(","," -").trim();
         } catch (Exception e) {}
         try {
-            rockets_launched = location.findElement(By.className("h6")).getText();
+            String[] tmpLocation = location.findElement(By.className("mt-4")).getText().split(" ");
+            rockets_launched = tmpLocation[0];
         } catch (Exception e) {}
 
         locations_list.add(new Location(launch_name,location_name,location_location,rockets_launched));
-    }
+    } // * ✓ Acabado
 }
