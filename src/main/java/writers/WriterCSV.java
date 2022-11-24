@@ -6,11 +6,9 @@ import com.opencsv.bean.StatefulBeanToCsvBuilder;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 import objetos.*;
-
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
-
 
 public interface WriterCSV {
     static void launchToCSV(List<Launch> launches_list) throws IOException, CsvRequiredFieldEmptyException, CsvDataTypeMismatchException {
@@ -28,15 +26,14 @@ public interface WriterCSV {
             beanWriter.write(launches_list);
         }
     }
-
     static void missionToCSV(List<Mission> mission_list) throws IOException, CsvRequiredFieldEmptyException, CsvDataTypeMismatchException {
         try (FileWriter writer = new FileWriter("out/mission.csv")) {
             ColumnPositionMappingStrategy mappingStrategy =  new ColumnPositionMappingStrategy();
             mappingStrategy.setType(Mission.class);
 
-            String[] columns = { "launch_name", "mission_name", "mission_type", "mission_launch_cost", "mission_description" };
+            String[] columns = { "rocket_name", "mission_name", "mission_type", "mission_launch_cost", "mission_description" };
             mappingStrategy.setColumnMapping(columns);
-            writer.write("\"launch_name\",\"mission_name\",\"mission_type\",\"mission_launch_cost\",\"mission_description\"\n");
+            writer.write("\"rocket_name\",\"mission_name\",\"mission_type\",\"mission_launch_cost\",\"mission_description\"\n");
 
             StatefulBeanToCsv beanWriter = new StatefulBeanToCsvBuilder(writer)
                     .withMappingStrategy(mappingStrategy)
@@ -44,7 +41,6 @@ public interface WriterCSV {
             beanWriter.write(mission_list);
         }
     }
-
     static void rocketToCSV(List<Rocket> rocket_list) throws IOException, CsvRequiredFieldEmptyException, CsvDataTypeMismatchException {
         try (FileWriter writer = new FileWriter("out/rocket.csv")) {
             ColumnPositionMappingStrategy mappingStrategy =  new ColumnPositionMappingStrategy();
