@@ -7,7 +7,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import writers.WriterCSV;
+import writers.WriterXML;
 
+import javax.xml.bind.JAXBException;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -29,7 +31,7 @@ public class Scrapper {
     /**
      * Obtiene todos los posts de la primera página.
      */
-    public void getPosts() throws IOException, CsvRequiredFieldEmptyException, CsvDataTypeMismatchException {
+    public void getPosts() throws IOException, CsvRequiredFieldEmptyException, CsvDataTypeMismatchException, JAXBException {
         driver.get("https://www.spacelaunchschedule.com");
         List<WebElement> posts = driver.findElements(By.className("my-2"));
         // ? Recorre todos los posts cogiendo todos los URLS
@@ -51,7 +53,7 @@ public class Scrapper {
     /**
      * Obtiene todos los CSV de 1 post.
      */
-    public void getInfoPost(List<String> allURLs) throws IOException, CsvRequiredFieldEmptyException, CsvDataTypeMismatchException {
+    public void getInfoPost(List<String> allURLs) throws IOException, CsvRequiredFieldEmptyException, CsvDataTypeMismatchException, JAXBException {
         // ? Creación de las listas de objetos.
         List<Launch> launches_list = new ArrayList<>();
         List<Mission> missions_list = new ArrayList<>();
@@ -62,16 +64,19 @@ public class Scrapper {
         // ? Obtención de la información y formatar a CSV y XML.
         for(String url : allURLs){
             driver.get(url);
-            // * getLaunch(launches_list);
-            // * WriterCSV.launchToCSV(launches_list);
+            getLaunch(launches_list);
+            WriterCSV.launchToCSV(launches_list);
+            WriterXML.launchToXML(launches_list);
+            /*
             getMission(missions_list);
             WriterCSV.missionToCSV(missions_list);
-            // * getRocket(rockets_list);
-            // * WriterCSV.rocketToCSV(rockets_list);
-            // ! getAgency(agencys_list);
-            // ! WriterCSV.agencyToCSV(agencys_list);
-            // * getLocation(locations_list);
-            // * WriterCSV.locationToCSV(locations_list);
+            getRocket(rockets_list);
+            WriterCSV.rocketToCSV(rockets_list);
+            getAgency(agencys_list);
+            WriterCSV.agencyToCSV(agencys_list);
+            getLocation(locations_list);
+            WriterCSV.locationToCSV(locations_list);
+            */
         }
     }
 
@@ -127,7 +132,7 @@ public class Scrapper {
         } catch (Exception e) {}
 
         missions_list.add(new Mission(rocket_name, mission_name, mission_type, mission_launch_cost, mission_description));
-    } // ? ~ Probando
+    } // * ✓ Acabado
     public void getRocket(List<Rocket> rockets_list) throws IOException {
         String agency_name = "unknown", rocket_name = "unknown", rocket_family = "unknown", rocket_length = "unknown", rocket_diameter = "unknown", rocket_launch_mass = "unknown", rocket_low_earth_orbit_capacity = "unknown", rocket_description = "unknown";
         WebElement rocket = driver.findElement(By.id("rocket"));
@@ -167,14 +172,16 @@ public class Scrapper {
             List<String> agency_list = new ArrayList<String>(Arrays.asList(agency_type.split("\n")));
             for(String s : agency_list){
                 List<String> agency_list_detail = new ArrayList<>(Arrays.asList(s.split(":")));
-                switch (agency_list_detail.get(0).trim()) {
-                    case "Type" -> agency_type = agency_list_detail.get(1).trim();
-                    case "Abbreviation" -> agency_abbreviation = agency_list_detail.get(1).trim();
-                    case "Administration" -> agency_administration = agency_list_detail.get(1)+": "+agency_list_detail.get(2);
-                    case "Founded" -> agency_founded = agency_list_detail.get(1).trim();
-                    case "Launchers" -> agency_launchers = agency_list_detail.get(1).trim();
-                    case "Country" -> agency_country = agency_list_detail.get(1).trim();
-                }
+                try {
+                    switch (agency_list_detail.get(0).trim()) {
+                        case "Type" -> agency_type = agency_list_detail.get(1).trim();
+                        case "Abbreviation" -> agency_abbreviation = agency_list_detail.get(1).trim();
+                        case "Administration" -> agency_administration = agency_list_detail.get(1)+": "+agency_list_detail.get(2);
+                        case "Founded" -> agency_founded = agency_list_detail.get(1).trim();
+                        case "Launchers" -> agency_launchers = agency_list_detail.get(1).trim();
+                        case "Country" -> agency_country = agency_list_detail.get(1).trim();
+                    }
+                } catch (Exception e){}
             }
         } catch (Exception e) {}
         try {
