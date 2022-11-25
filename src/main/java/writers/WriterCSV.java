@@ -59,11 +59,11 @@ public interface WriterCSV {
     static void agencyToCSV(List<Agency> agency_list) throws IOException, CsvRequiredFieldEmptyException, CsvDataTypeMismatchException {
         try (FileWriter writer = new FileWriter("out/agency.csv")) {
             ColumnPositionMappingStrategy mappingStrategy =  new ColumnPositionMappingStrategy();
-            mappingStrategy.setType(Mission.class);
+            mappingStrategy.setType(Agency.class);
 
-            String[] columns = { "launch_name", "mission_name", "mission_type", "mission_launch_cost", "mission_description" };
+            String[] columns = { "agency_name","agency_type","agency_abbreviation","agency_administration","agency_founded","agency_country","agency_spacecraft","agency_launchers","agency_description" };
             mappingStrategy.setColumnMapping(columns);
-            writer.write("\"launch_name\",\"mission_name\",\"mission_type\",\"mission_launch_cost\",\"mission_description\"\n");
+            writer.write("\"agency_name\",\"agency_type\",\"agency_abbreviation\",\"agency_administration\",\"agency_founded\",\"agency_country\",\"agency_spacecraft\",\"agency_launchers\",\"agency_description\"\n");
 
             StatefulBeanToCsv beanWriter = new StatefulBeanToCsvBuilder(writer)
                     .withMappingStrategy(mappingStrategy)
