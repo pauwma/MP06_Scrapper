@@ -11,10 +11,11 @@ import java.io.IOException;
 import java.util.List;
 
 public interface WriterCSV {
+    LaunchList launches_list = new LaunchList();
     static void launchToCSV(List<Launch> launches_list) throws IOException, CsvRequiredFieldEmptyException, CsvDataTypeMismatchException {
         try (FileWriter writer = new FileWriter("out/launch.csv")) {
             ColumnPositionMappingStrategy mappingStrategy =  new ColumnPositionMappingStrategy();
-            mappingStrategy.setType(Launch.class);
+             mappingStrategy.setType(Launch.class);
 
             String[] columns = { "launch_title", "launch_status", "launch_date", "rocket_name", "agency_name", "location_name" };
             mappingStrategy.setColumnMapping(columns);
