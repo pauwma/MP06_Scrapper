@@ -61,23 +61,26 @@ public class Scrapper {
         List<Agency> agencys_list = new ArrayList<>();
         List<Location> locations_list = new ArrayList<>();
 
-        // ? Obtención de la información y formatar a CSV y XML.
+        // ? Obtención de la información
         for(String url : allURLs){
             driver.get(url);
             getLaunch(launches_list);
-            WriterCSV.launchToCSV(launches_list);
-            WriterXML.launchToXML(launches_list);
-            /*
             getMission(missions_list);
-            WriterCSV.missionToCSV(missions_list);
             getRocket(rockets_list);
-            WriterCSV.rocketToCSV(rockets_list);
             getAgency(agencys_list);
-            WriterCSV.agencyToCSV(agencys_list);
             getLocation(locations_list);
-            WriterCSV.locationToCSV(locations_list);
-            */
-        }
+        }   
+
+        // ? Listas a CSV.
+        WriterCSV.launchToCSV(launches_list);
+        WriterCSV.missionToCSV(missions_list);
+        WriterCSV.rocketToCSV(rockets_list);
+        WriterCSV.agencyToCSV(agencys_list);
+        WriterCSV.locationToCSV(locations_list);
+
+        // Listas a XML.
+        WriterXML.launchToXML(launches_list);
+
     }
 
     public void getLaunch(List<Launch> launches_list) throws IOException {
