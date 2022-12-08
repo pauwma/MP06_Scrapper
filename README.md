@@ -10,6 +10,6 @@
 ![Diagrama de datos](https://github.com/pauwma/MP06_Scrapper/blob/master/diagrama_datos.png?raw=true)
 
 ## **Scrapping**
-
+![Diagrama de datos](https://github.com/pauwma/MP06_Scrapper/blob/master/diagrama_scrapping.png?raw=true)
 
 ###### ***pauwma***
