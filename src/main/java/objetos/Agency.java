@@ -1,5 +1,9 @@
 package objetos;
 
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement(name = "agency")
 public class Agency {
     private String agency_name = "unknown";
     private String agency_type = "unknown";
@@ -21,5 +25,50 @@ public class Agency {
         this.agency_spacecraft = agency_spacecraft;
         this.agency_country = agency_country;
         this.agency_description = agency_description;
+    }
+
+    @XmlElement
+    public String getAgency_name() {
+        return agency_name;
+    }
+
+    @XmlElement
+    public String getAgency_type() {
+        return agency_type;
+    }
+
+    @XmlElement
+    public String getAgency_abbreviation() {
+        return agency_abbreviation;
+    }
+
+    @XmlElement
+    public String getAgency_administration() {
+        return agency_administration;
+    }
+
+    @XmlElement
+    public String getAgency_founded() {
+        return agency_founded;
+    }
+
+    @XmlElement
+    public String getAgency_launchers() {
+        return agency_launchers;
+    }
+
+    @XmlElement
+    public String getAgency_spacecraft() {
+        return agency_spacecraft;
+    }
+
+    @XmlElement
+    public String getAgency_country() {
+        return agency_country;
+    }
+
+    @XmlElement
+    public String getAgency_description() {
+        return agency_description;
     }
 }

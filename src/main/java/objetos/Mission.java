@@ -1,5 +1,9 @@
 package objetos;
 
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement(name = "mission")
 public class Mission {
     private String rocket_name = "unknown";
     private String mission_name = "unknown";
@@ -13,5 +17,30 @@ public class Mission {
         this.mission_type = mission_type;
         this.mission_launch_cost = mission_launch_cost;
         this.mission_description = mission_description;
+    }
+
+    @XmlElement
+    public String getRocket_name() {
+        return rocket_name;
+    }
+
+    @XmlElement
+    public String getMission_name() {
+        return mission_name;
+    }
+
+    @XmlElement
+    public String getMission_type() {
+        return mission_type;
+    }
+
+    @XmlElement
+    public String getMission_launch_cost() {
+        return mission_launch_cost;
+    }
+
+    @XmlElement
+    public String getMission_description() {
+        return mission_description;
     }
 }

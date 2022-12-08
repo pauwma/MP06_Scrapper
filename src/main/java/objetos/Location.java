@@ -1,5 +1,9 @@
 package objetos;
 
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement(name = "location")
 public class Location {
     private String launch_name = "unknown";
     private String location_name = "unknown";
@@ -11,5 +15,25 @@ public class Location {
         this.location_name = location_name;
         this.location_location = location_location;
         this.rockets_launched = rockets_launched;
+    }
+
+    @XmlElement
+    public String getLaunch_name() {
+        return launch_name;
+    }
+
+    @XmlElement
+    public String getLocation_name() {
+        return location_name;
+    }
+
+    @XmlElement
+    public String getLocation_location() {
+        return location_location;
+    }
+
+    @XmlElement
+    public String getRockets_launched() {
+        return rockets_launched;
     }
 }
