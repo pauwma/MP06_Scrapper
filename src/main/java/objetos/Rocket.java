@@ -25,6 +25,8 @@ public class Rocket {
         this.rocket_description = rocket_description;
     }
 
+    public Rocket(){}
+
     @XmlElement
     public String getRocket_name() {
         return rocket_name;

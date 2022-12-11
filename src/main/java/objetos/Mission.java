@@ -1,5 +1,6 @@
 package objetos;
 
+
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 
@@ -18,6 +19,8 @@ public class Mission {
         this.mission_launch_cost = mission_launch_cost;
         this.mission_description = mission_description;
     }
+
+    public Mission(){}
 
     @XmlElement
     public String getRocket_name() {

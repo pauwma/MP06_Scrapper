@@ -2,7 +2,7 @@ package objetos;
 
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
-import objetos.Launch;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,9 +16,6 @@ public class LaunchList {
     }
 
     public void add(Launch launch) {
-        if (this.listLaunches == null) {
-            this.listLaunches = new ArrayList<Launch>();
-        }
         this.listLaunches.add(launch);
     }
 

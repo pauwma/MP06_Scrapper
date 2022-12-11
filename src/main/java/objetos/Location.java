@@ -17,6 +17,8 @@ public class Location {
         this.rockets_launched = rockets_launched;
     }
 
+    public Location(){}
+
     @XmlElement
     public String getLaunch_name() {
         return launch_name;

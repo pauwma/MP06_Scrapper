@@ -27,6 +27,8 @@ public class Agency {
         this.agency_description = agency_description;
     }
 
+    public Agency(){}
+
     @XmlElement
     public String getAgency_name() {
         return agency_name;
