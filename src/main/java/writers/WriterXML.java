@@ -1,21 +1,105 @@
 package writers;
 
-import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.JAXBException;
-import jakarta.xml.bind.Marshaller;
-import objetos.Launch;
-import objetos.LaunchList;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
+import objetos.*;
+
 import java.io.File;
 import java.util.List;
+import jakarta.xml.bind.*;
 
-public interface WriterXML {
 
+public class WriterXML {
+    AgencyList agencyList = new AgencyList();
+    LaunchList launchList = new LaunchList();
+    LocationList locationList = new LocationList();
+    MissionList missionList = new MissionList();
+    RocketList rocketList = new RocketList();
+    Agency agencyData;
+    Launch launchData;
+    Location locationData;
+    Mission missionData;
+    Rocket rocketData;
+    JAXBContext jaxbContext;
+    Marshaller jaxbMarshaller;
+
+    public WriterXML (List<Agency> agencyList, List<Launch> launchList, List<Location> locationList, List<Mission> missionList, List<Rocket> rocketList) {
+        try {
+            jaxbContext = JAXBContext.newInstance(Agency.class);
+
+            for (Agency agency : agencyList) {
+                agencyData = new Agency(agency.getAgency_name(),agency.getAgency_type(),agency.getAgency_abbreviation(),agency.getAgency_administration(),agency.getAgency_founded(),agency.getAgency_launchers(),agency.getAgency_spacecraft(),agency.getAgency_country(),agency.getAgency_description());
+                agencyList.add(agencyData);
+            }
+
+            jaxbMarshaller = jaxbContext.createMarshaller();
+            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            jaxbMarshaller.marshal(agencyList, new File("out/agency.xml"));
+
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
+        try {
+            jaxbContext = JAXBContext.newInstance(Launch.class);
+
+            for (Launch launch : launchList) {
+                launchData = new Launch(launch.getLaunch_title(),launch.getLaunch_status(),launch.getLaunch_date(),launch.getRocket_name(),launch.getAgency_name(),launch.getLocation_name());
+                launchList.add(launchData);
+            }
+
+            jaxbMarshaller = jaxbContext.createMarshaller();
+            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            jaxbMarshaller.marshal(launchList, new File("out/launch.xml"));
+
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
+        try {
+            jaxbContext = JAXBContext.newInstance(Location.class);
+
+            for (Location location : locationList) {
+                locationData = new Location(location.getLaunch_name(),location.getLocation_name(),location.getLocation_location(),location.getRockets_launched());
+                locationList.add(locationData);
+            }
+
+            jaxbMarshaller = jaxbContext.createMarshaller();
+            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            jaxbMarshaller.marshal(locationList, new File("out/location.xml"));
+
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
+        try {
+            jaxbContext = JAXBContext.newInstance(Mission.class);
+
+            for (Mission mission : missionList) {
+                missionData = new Mission(mission.getRocket_name(),mission.getMission_name(), mission.getMission_type(), mission.getMission_launch_cost(),mission.getMission_description());
+                missionList.add(missionData);
+            }
+
+            jaxbMarshaller = jaxbContext.createMarshaller();
+            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            jaxbMarshaller.marshal(missionList, new File("out/mission.xml"));
+
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
+        try {
+            jaxbContext = JAXBContext.newInstance(Rocket.class);
+
+            for (Rocket rocket : rocketList) {
+                rocketData = new Rocket(rocket.getAgency_name(),rocket.getRocket_name(),rocket.getRocket_family(),rocket.getRocket_length(),rocket.getRocket_diameter(),rocket.getRocket_launch_mass(),rocket.getRocket_low_earth_orbit_capacity(),rocket.getRocket_description());
+                rocketList.add(rocketData);
+            }
+
+            jaxbMarshaller = jaxbContext.createMarshaller();
+            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            jaxbMarshaller.marshal(missionList, new File("out/rocket.xml"));
+
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
+    }
+    /*
     static void launchToXMLJAXB(LaunchList launches_list) throws JAXBException {
         try {
             // Creamos un fichero XML donde se guardará la salida del marshalling
@@ -41,62 +125,25 @@ public interface WriterXML {
         }
     }
 
-    static void launchToXML(List<Launch> launches_list) {
+    public static void launchJAXBTest(List<Launch> launches_list) {
+
+        LaunchList launchList = new LaunchList();
         try {
-            // Creamos un fichero XML donde se guardará la salida del marshalling
-            File file = new File("out/launches.xml");
+            JAXBContext jaxbContext = JAXBContext. newInstance(LaunchList.class);
+            Launch tmpLaunch;
 
-            // Creamos un DocumentBuilderFactory y un DocumentBuilder
-            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-
-            // Creamos un documento XML vacío
-            Document doc = dBuilder.newDocument();
-
-            // Creamos un elemento "launches" que será el elemento raíz del documento XML
-            Element launchesElement = doc.createElement("launches");
-            doc.appendChild(launchesElement);
-
-            // Para cada objeto Launch en la lista, creamos un elemento "launch" en el documento XML
             for (Launch launch : launches_list) {
-                Element launchElement = doc.createElement("launch");
-
-                // Creamos un elemento "launch_title" dentro del elemento "launch"
-                Element launchTitleElement = doc.createElement("launch_title");
-                launchTitleElement.setTextContent(launch.getLaunch_title());
-                launchElement.appendChild(launchTitleElement);
-                // Creamos un elemento "launch_status" dentro del elemento "launch"
-                Element launchStatusElement = doc.createElement("launch_status");
-                launchStatusElement.setTextContent(launch.getLaunch_status());
-                launchElement.appendChild(launchStatusElement);
-
-                // Creamos un elemento "launch_date" dentro del elemento "launch"
-                Element launchDateElement = doc.createElement("launch_date");
-                launchDateElement.setTextContent(launch.getLaunch_date());
-                launchElement.appendChild(launchDateElement);
-
-                // Creamos un elemento "rocket_name" dentro del elemento "launch"
-                Element rocketNameElement = doc.createElement("rocket_name");
-                rocketNameElement.setTextContent(launch.getRocket_name());
-                launchElement.appendChild(rocketNameElement);
-
-                /// Creamos un elemento "agency_name" dentro del elemento "launch"
-                Element agencyNameElement = doc.createElement("agency_name");
-                agencyNameElement.setTextContent(launch.getAgency_name());
-                launchElement.appendChild(agencyNameElement);
-
-                /// Creamos un elemento "location_name" dentro del elemento "launch"
-                Element locationNameElement = doc.createElement("location_name");
-                locationNameElement.setTextContent(launch.getLocation_name());
-                launchElement.appendChild(locationNameElement);
-
-                /// Añadimos el elemento "launch" al elemento "launches"
-                launchesElement.appendChild(launchElement);
-
+                tmpLaunch = new Launch(launch.getLaunch_title(), launch.getLaunch_status(), launch.getLaunch_date(), launch.getRocket_name(), launch.getAgency_name(), launch.getLocation_name());
+                launchList.add(tmpLaunch);
             }
-        } catch (ParserConfigurationException e) {
-            System.out.println("MAL MAL MAL MAL");
-            throw new RuntimeException(e);
+
+            Marshaller marshaller = jaxbContext.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            marshaller.marshal(launches_list, new File("out/launch.xml"));
+
+        } catch (JAXBException e) {
+            e.printStackTrace();
         }
-    }
+    } */
 }
+
