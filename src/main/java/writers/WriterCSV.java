@@ -10,6 +10,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * Clase que gestiona la transformación de la información a CSV
+ */
 public interface WriterCSV {
     LaunchList launches_list = new LaunchList();
     static void launchToCSV(List<Launch> launches_list) throws IOException, CsvRequiredFieldEmptyException, CsvDataTypeMismatchException {

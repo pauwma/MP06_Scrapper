@@ -7,7 +7,9 @@ import java.io.File;
 import java.util.List;
 import jakarta.xml.bind.*;
 
-
+/**
+ * Clase que gestiona la transformación de la información a XML
+ */
 public class WriterXML {
     AgencyList agencyList = new AgencyList();
     LaunchList launchList = new LaunchList();
