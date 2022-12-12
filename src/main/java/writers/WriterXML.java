@@ -24,6 +24,9 @@ public class WriterXML {
     JAXBContext jaxbContext;
     Marshaller jaxbMarshaller;
 
+    /**
+     * Constructor que iniciar la transformación de la información.
+     */
     public WriterXML (List<Agency> agencyList, List<Launch> launchList, List<Location> locationList, List<Mission> missionList, List<Rocket> rocketList) {
         try {
             jaxbContext = JAXBContext.newInstance(Agency.class);

@@ -82,6 +82,9 @@ public class Scrapper {
 
     }
 
+    /**
+     * Scrapea la información de la sección de Agency
+     */
     public void getAgency(List<Agency> agencys_list) throws IOException {
         String agency_name = "unknown", agency_type = "unknown", agency_abbreviation = "unknown", agency_administration = "unknown", agency_launchers = "unknown", agency_country = "unknown", agency_description = "none", agency_founded = "unknown", agency_spacecraft = "unknown";
         WebElement agency = driver.findElement(By.id("agency"));
@@ -112,6 +115,9 @@ public class Scrapper {
 
         agencys_list.add(new Agency(agency_name, agency_type, agency_abbreviation, agency_administration, agency_founded, agency_launchers, agency_spacecraft, agency_country, agency_description));
     } // * ✓ Acabado
+    /**
+     * Scrapea la información de la sección de Launch
+     */
     public void getLaunch(List<Launch> launches_list) throws IOException {
         String launch_title = "", launch_status = "", launch_date = "", rocket_name = "", agency_name = "", location_name = "unknown";
         WebElement launch_details = driver.findElement(By.id("launch-details"));
@@ -140,6 +146,9 @@ public class Scrapper {
 
         launches_list.add(new Launch(launch_title, launch_status, launch_date, rocket_name, agency_name, location_name));
     } // * ✓ Acabado
+    /**
+     * Scrapea la información de la sección de Location
+     */
     public void getLocation(List<Location> locations_list) throws IOException {
         String launch_name = "unknown", location_name = "unknown", location_location = "unknown", rockets_launched = "unknown";
         WebElement location = driver.findElement(By.id("location"));
@@ -159,6 +168,9 @@ public class Scrapper {
 
         locations_list.add(new Location(launch_name,location_name,location_location,rockets_launched));
     } // * ✓ Acabado
+    /**
+     * Scrapea la información de la sección de Mission
+     */
     public void getMission(List<Mission> missions_list) throws IOException {
         String rocket_name = "unknown", mission_name = "unknown", mission_type = "unknown", mission_launch_cost = "unknown", mission_description = "unknown";
         try {WebElement mission = driver.findElement(By.id("mission"));
@@ -185,6 +197,9 @@ public class Scrapper {
 
         missions_list.add(new Mission(rocket_name, mission_name, mission_type, mission_launch_cost, mission_description));
     } // * ✓ Acabado
+    /**
+     * Scrapea la información de la sección de Rocket
+     */
     public void getRocket(List<Rocket> rockets_list) throws IOException {
         String agency_name = "unknown", rocket_name = "unknown", rocket_family = "unknown", rocket_length = "unknown", rocket_diameter = "unknown", rocket_launch_mass = "unknown", rocket_low_earth_orbit_capacity = "unknown", rocket_description = "unknown";
         WebElement rocket = driver.findElement(By.id("rocket"));
