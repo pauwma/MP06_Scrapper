@@ -7,7 +7,7 @@ import java.io.IOException;
 /**
  * Clase Main
  *
- * @author  pauwma
+ * @author  pauwma :D
  */
 
 public class Main {
