@@ -2,7 +2,9 @@ package objetos;
 
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
-
+/**
+ * Clase Agency
+ */
 @XmlRootElement(name = "agency")
 public class Agency {
     private String agency_name = "unknown";

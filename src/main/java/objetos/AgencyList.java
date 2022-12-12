@@ -6,6 +6,9 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Clase AgencyList
+ */
 @XmlRootElement(name="agencys")
 public class AgencyList {
     public List<Agency> listAgencys;

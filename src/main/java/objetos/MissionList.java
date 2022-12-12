@@ -6,6 +6,9 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Clase MissionList
+ */
 @XmlRootElement(name="missions")
 public class MissionList {
     public List<Mission> listMissions;

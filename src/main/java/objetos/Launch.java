@@ -4,6 +4,9 @@ package objetos;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 
+/**
+ * Clase Launch
+ */
 @XmlRootElement(name = "launch")
 public class Launch {
     private String launch_title;

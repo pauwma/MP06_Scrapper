@@ -3,6 +3,9 @@ package objetos;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 
+/**
+ * Clase Rocket
+ */
 @XmlRootElement(name = "rocket")
 public class Rocket {
     private String rocket_name = "unknown";
