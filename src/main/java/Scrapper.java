@@ -7,6 +7,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import writers.WriterCSV;
 import writers.WriterXML;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -61,25 +62,23 @@ public class Scrapper {
         // ? Obtención de la información
         for(String url : allURLs){
             driver.get(url);
+            getAgency(agencys_list);
             getLaunch(launches_list);
+            getLocation(locations_list);
             getMission(missions_list);
             getRocket(rockets_list);
-            getAgency(agencys_list);
-            getLocation(locations_list);
-        }   
+        }
 
         // ? Listas a CSV.
-        /*
+        WriterCSV.agencyToCSV(agencys_list);
         WriterCSV.launchToCSV(launches_list);
+        WriterCSV.locationToCSV(locations_list);
         WriterCSV.missionToCSV(missions_list);
         WriterCSV.rocketToCSV(rockets_list);
-        WriterCSV.agencyToCSV(agencys_list);
-        WriterCSV.locationToCSV(locations_list);
-        */
+
 
         // ? Listas a XML.
-        WriterXML.launchToXML(launches_list);
-        WriterXML.launchToXMLJAXB(launches_listJAXB);
+        WriterXML writerXML = new WriterXML(agencys_list,launches_list,locations_list,missions_list,rockets_list);
 
     }
 
